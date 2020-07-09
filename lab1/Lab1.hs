@@ -65,7 +65,7 @@ rbgToCmyk color = CMYK
 -- используйте рекурсию
 -- не забудьте случаи n < 0 и n == 0.
 geomProgression :: Double -> Double -> Integer -> Double
-geomProgression b _q 1 = b
+geomProgression b _ 0 = b
 geomProgression b q n | n > 0 = (geomProgression b q (n-1))*q
                       | otherwise = error "n must be positive"
 

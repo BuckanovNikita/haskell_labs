@@ -11,5 +11,14 @@ module Luhn where
 
 -- Не пытайтесь собрать всё в одну функцию, используйте вспомогательные.
 -- Не забудьте добавить тесты (в отдельном модуле или здесь же), в том числе для вспомогательных функций!
+
+luhn2mult :: Int -> Int
+luhn2mult x = if c > 9 then c-9 else c
+                where c = 2 * x
+
+luhnStep :: [Int]  -> Int
+luhnStep [] = 0
+luhnStep (x:xs) = if (length xs) `mod` 2 == 1 then luhn2mult x + luhnStep xs else x + luhnStep xs
+
 isLuhnValid :: [Int] -> Bool
-isLuhnValid = error "todo"
+isLuhnValid xs = luhnStep xs `mod` 10 == 0
