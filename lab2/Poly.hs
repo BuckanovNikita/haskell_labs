@@ -40,6 +40,11 @@ instance (Num a, Eq a) => Eq (Poly a) where
 -- Это должна быть стандартная математическая запись, 
 -- например: show (3 * x * x + 1) == "3 * x^2 + 1").
 -- (* и + для многочленов можно будет использовать после задания 6.)
+-- Задание 4 -----------------------------------------
+-- Определите перевод многочлена в строку. 
+-- Это должна быть стандартная математическая запись, 
+-- например: show (3 * x * x + 1) == "3 * x^2 + 1").
+-- (* и + для многочленов можно будет использовать после задания 6.)
 instance (Num a, Eq a, Show a) => Show (Poly a) where
     show (P p) = let ps = reverse $ filter ((/= 0) . fst) $ zip p ([0..] :: [Integer])
                      showPoly [] = ["0"]
@@ -56,9 +61,13 @@ instance (Num a, Eq a, Show a) => Show (Poly a) where
                         showPower 1 = "x"
                         showPower n = "x^" ++ show n
 
-                        showValue c = show (abs c)
+                        showValue c pow | c == 1  && pow > 0 = ""
+                                        | c == -1 && pow > 0 = ""
+                                        | c == 1 && pow == 0 = show c
+                                        | c == -1 && pow == 0 = show (abs c)
+                                        | otherwise = show (abs c) ++ " * "
                         
-                        iter c state = showSign (fst c) state ++ showValue (fst c) ++ showPower (snd c)
+                        iter c state = showSign (fst c) state ++ showValue (fst c) (snd c) ++ showPower (snd c)
                         showFst c  = iter c True
                         showNxt c = iter c False
                         
@@ -83,17 +92,22 @@ times (P p1) (P p2) = times' (P p1) (P p2)
     times' (P (a : as)) (P bs) = P (map (a *) bs) `plus` times' (P as) (P (0:bs))
 
 -- Задание 7 -----------------------------------------
-
 -- Сделайте многочлены числовым типом
 instance Num a => Num (Poly a) where
     (+) = plus
     (*) = times
     negate (P p) = P $ map negate p
     fromInteger s = P [fromIntegral s]
-    -- Эти функции оставить как undefined, поскольку для 
+    -- Эти функции оставить как undefined, поскольку для
     -- многочленов они не имеют математического смысла
     abs    = undefined
     signum = undefined
+
+-- Это нужно, чтобы работало не только с целыми коэффициентами, например, "x + 5.3"
+instance Fractional a => Fractional (Poly a) where
+    fromRational a = P [fromRational a]
+    (/) = undefined
+    recip = undefined
 
 -- Задание 8 -----------------------------------------
 

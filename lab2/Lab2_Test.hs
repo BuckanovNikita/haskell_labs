@@ -26,7 +26,7 @@ allTests = tests [
         expect $ show (P [1, 2, 3, -1, -2, -3, 1, 2, 3, -1, -2, 0, 1024]) == "1024 * x^12 - 2 * x^10 - x^9 + 3 * x^8 + 2 * x^7 + x^6 - 3 * x^5 - 2 * x^4 - x^3 + 3 * x^2 + 2 * x + 1"
         ,expect $ show (P []) == "0"
         ,expect $ show (P [1]) == "1"
-        ,expect $ show (P [-1.0]) == "-1"
+        ,expect $ show (P [-1.0]) == "-1.0"
         ,expect $ show (P [0.0, 0.0, 0.0, 0.0]) == "0"
         ,expect $ show (P [-1, 2]) == "2 * x - 1"
         ,expect $ show (P [-1, -2, 0]) == "-2 * x - 1"
